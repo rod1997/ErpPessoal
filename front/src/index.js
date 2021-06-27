@@ -6,17 +6,20 @@ import './index.css';
 import 'primereact/resources/themes/saga-blue/theme.css'
 import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
+import 'primeflex/primeflex.css';
 
-import App from './App';
-import ContaReceberFormulario from './modulos/formulario-conta-receber.js'
+import   MenuPrincipal  from './modulos/menu/menu.js';
 
+
+import ContaReceberRotas from "./modulos/conta-receber/router-conta-receber"
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter>  
+    <MenuPrincipal>
       <Switch>
-        <Route exact path="/conta-receber" component={App}/> 
-        <Route exact path="/conta-receber/cadastro/:id" component={ContaReceberFormulario}/> 
+        <ContaReceberRotas/>
       </Switch>
+    </MenuPrincipal>  
 
   </BrowserRouter>,
   document.getElementById('root')

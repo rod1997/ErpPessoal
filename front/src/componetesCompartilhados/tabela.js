@@ -12,7 +12,9 @@ export class Tabela extends React.Component{
             values : props.values,
             headers : props.headers,
             url: props.url,
-            mask : props.mask,
+            mask : props.mask || false,
+            filtro: 5,
+            busca: ''
         }    
     }
     acceptFunc(){
@@ -50,35 +52,42 @@ export class Tabela extends React.Component{
         
         })
     }    
- 
+    filtragem(){
+        let valorFiltro = document.getElementById('select-filtro').value
+        this.setState({filtro: valorFiltro})
+    }
+    checaFiltro(){
+        let tamanhoDados = this.state.values.length
+        return this.state.filtro > tamanhoDados ? tamanhoDados : this.state.filtro
+    }
     render() {
 
-        var dadoss = this.state.values
+        var dadosBanco = this.state.values
         let data = []
-        let dados = this.state.headers   
+        let nomesCampos = this.state.headers   
 
-        for(let c=0 ; c < dadoss.length; c++){
+        for(let c=0 ; c < this.checaFiltro() ; c++){
 
-            let linha = dadoss[c]
+            let linha = dadosBanco[c]
 
             let objlinha = []
 
-            dados.forEach(key => {
+            nomesCampos.forEach(key => {
                 
-                if(key == 'data_cadastro'|| key == "data_vencimento"){
+                if(key.nomeBanco == 'data_cadastro'|| key.nomeBanco == "data_vencimento"){
 
-                    linha[key] = linha[key].substring(0,10)
+                    linha[key.nomeBanco] = linha[key.nomeBanco].substring(0,10)
                 }
-                if(this.state.mask[key]){
+                if(this.state.mask[key.nomeBanco]){
 
-                    var mask =  this.state.mask[key]
-                    linha[key] = mask(linha[key])
+                    let mask =  this.state.mask[key.nomeBanco]
+                    linha[key.nomeBanco] = mask(linha[key.nomeBanco])
                 }
-                objlinha.push(<td className="row">{linha[key]}</td>)
+                objlinha.push(<td className="row">{linha[key.nomeBanco]}</td>)
 
             })
 
-            let botaoEditar = <Button icon="pi pi-search" onClick={() => window.location = `${window.location.pathname}/cadastro/${linha.id}`} className="p-button-rounded p-button-info" />
+            let botaoEditar = <Button icon="pi pi-search" onClick={() => this.props.history.push(`${window.location.pathname}/cadastro/${linha.id}`)} className="p-button-rounded p-button-info" />
             let botaoExcluir = <Button onClick={()=> { this.confirm() } } icon="pi pi-times" className="p-button-rounded p-button-danger p-ml" />
 
 
@@ -86,13 +95,19 @@ export class Tabela extends React.Component{
         }
 
         let coluna = []
-        for(let c=0 ; c < dados.length ; c++ ){
+        for(let c=0 ; c < nomesCampos.length ; c++ ){
         
-            coluna.push(<th className="colunas">{dados[c]}</th>)
+            coluna.push(<th className="colunas">{nomesCampos[c].nomeTabela}</th>)
         }
         coluna.push(<th className="colunas">#</th>)     
         return (
-            <th>
+            <>
+            <select id="select-filtro" onChange={()=>{ this.filtragem() }}>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+            </select>
+            <input type="text" placeholder="buscar"/><Button>buscar</Button>
             <table className = "tabela"> 
                 <thead>
                 {coluna}
@@ -101,7 +116,7 @@ export class Tabela extends React.Component{
                 {data}
                 </tbody>
             </table>
-            </th>
+            </>
         );
     }
 }
