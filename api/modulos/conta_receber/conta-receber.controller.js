@@ -2,30 +2,48 @@ const conexao = require('../../conexao.js')
 
 class contaReceberController{
 
-    async listar(id = null, filtro = null, busca = null){
+    async listar(query=null){
 
         try{
-            const conn = await conexao.conexao()
-            
-            let sql = 'SELECT * FROM conta_receber '
+            const conn = await conexao.conexao() 
+            let sql = 'SELECT * FROM conta_receber  WHERE excluido IS NULL'
+            let sqlTotal = "SELECT COUNT(*) as total_registros FROM conta_receber  WHERE excluido IS NULL"
+            let valores = []
 
-            const [ retorno ] = await conn.query(sql)
+            if(query != null && query.id || query.busca || query){
 
-            return retorno
+                if(query.id){
+                    sql += " AND id = ? "
+                    valores.push(query.id)
+
+                }else if(query.busca){
+                    sql += " AND devedor LIKE '%"+query.busca+"%'"
+                }  
+                sql += ` LIMIT ${query.init},${query.quant}`
+
+                const [ retorno ] = await conn.query(sql,valores)
+                const  [ total ] = await conn.query(sqlTotal)
+
+                return { "listaReceber" : retorno  , "total_registros":  total[0].total_registros }
+
+            }else{
+
+                const  [ total ] = await conn.query(sqlTotal)
+
+                const [ retorno ] = await conn.query(sql)
+                return { "listaReceber" : retorno  , "total_registros":  total[0].total_registros }
+            }    
+
         }catch{
-
             console.log('erro banco')
             return false
         }    
-
     }
     async criar(dados){
 
         try{
             const conn = await conexao.conexao()
-            
             let sql = 'INSERT INTO conta_receber SET data_cadastro = NOW() '
-
             let valores = []
 
             Object.keys(dados).forEach(function (key){
@@ -33,10 +51,7 @@ class contaReceberController{
                 valores.push(dados[key])
             });
 
-            console.log(sql)
-
             const [ retorno ] = await conn.query(sql,valores)
-
             return retorno
 
         }catch{
@@ -72,13 +87,10 @@ class contaReceberController{
 
             sql += ' WHERE id = ?'
             valores.push(id)
-
             const [ retorno ] = await conn.query(sql,valores)
-
             return retorno
 
         }catch{
-
             console.log('erro banco')
             return false
         }    
@@ -88,14 +100,16 @@ class contaReceberController{
 
         try{
             const id = body.id
-
             const conn = await conexao.conexao()
-            
-            let sql = 'UPDATE conta_receber SET excluido = NOW() WHERE id = ? '
 
+            console.log(id)
+
+            let sql = 'UPDATE conta_receber SET excluido = NOW() WHERE id = ? '
             const [ retorno ] = await conn.query(sql,id)
 
+            console.log(sql)
             return retorno
+
         }catch{
 
             console.log('erro banco')

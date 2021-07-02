@@ -6,11 +6,13 @@ const ContaReceberController = require('./conta-receber.controller.js')
 
 const controller = new ContaReceberController()
 
-inicio.get('/listar',async function(req,res){    
+inicio.get('/listar',async function(req,res){  
     
-    const listaReceber = await controller.listar()
+    const filtro = req.query
 
-    res.send({listaReceber})
+    const listaReceber = await controller.listar(filtro)
+
+    res.json(listaReceber)
 })
 
 inicio.post('/criar',async function(req,res){   
