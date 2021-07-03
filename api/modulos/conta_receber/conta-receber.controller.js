@@ -18,9 +18,10 @@ class contaReceberController{
 
                 }else if(query.busca){
                     sql += " AND devedor LIKE '%"+query.busca+"%'"
-                }  
-                sql += ` LIMIT ${query.init},${query.quant}`
-
+                }
+                if(!query.id){  
+                    sql += ` LIMIT ${query.init},${query.quant}`
+                }    
                 const [ retorno ] = await conn.query(sql,valores)
                 const  [ total ] = await conn.query(sqlTotal)
 
@@ -87,6 +88,7 @@ class contaReceberController{
 
             sql += ' WHERE id = ?'
             valores.push(id)
+
             const [ retorno ] = await conn.query(sql,valores)
             return retorno
 

@@ -22,7 +22,7 @@ export class Tabela extends React.Component{
 
         Axios({
             method: 'post',
-            url: `http://localhost:3005/deletar`,
+            url: `http://localhost:3005/${this.state.url}/deletar`,
             data: {
                 id: idRegistro
             }
@@ -31,6 +31,7 @@ export class Tabela extends React.Component{
         }).catch((erro)=>{
             alert(erro)
         })
+        this.ajax('',0,this.state.totalRegistros)
     }
 
     confirm(id){
@@ -48,7 +49,7 @@ export class Tabela extends React.Component{
     }
     ajax(busca="",init,quant){
 
-        let url = (busca == "" )? `http://localhost:3005/${this.state.url}?init=${init}&quant=${quant}` : `http://localhost:3005/${this.state.url}?busca=${busca}&init=${init}&quant=${quant}`
+        let url = (busca == "" )? `http://localhost:3005/${this.state.url}/listar?init=${init}&quant=${quant}` : `http://localhost:3005/${this.state.url}?busca=${busca}&init=${init}&quant=${quant}`
 
         Axios.get(url)
         .then(result=>{

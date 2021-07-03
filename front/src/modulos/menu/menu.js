@@ -11,7 +11,10 @@ class MenuPrincipal extends Component {
             {
                 label:'Dashboard',
                 icon:'pi pi-globe pi-fw',
-                command:() => this.props.history.push('/')
+                command:() => { 
+                    if(this.props.history.location.pathname != '/' )
+                        this.props.history.push('/')
+                }
             },
             {
                 label:'Financeiro',
@@ -20,8 +23,10 @@ class MenuPrincipal extends Component {
                     {
                         label:'Conta a receber',
                         icon:'pi pi-dollar',
-                        command:() => this.props.history.push('/conta-receber')
-
+                        command:() => { 
+                            if(this.props.history.location.pathname != '/conta-receber' )
+                                this.props.history.push('/conta-receber')
+                        }    
                     },
                     {
                         label:'Conta a pagar',
@@ -49,9 +54,12 @@ class MenuPrincipal extends Component {
             }
             
         ];
+
+       
                
      
-    }    
+    }  
+  
     render() {
         return (
             <div className="menu">

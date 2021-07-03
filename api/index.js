@@ -4,7 +4,7 @@ const bodyparser = require('body-parser')
 const morgan = require('morgan')
 
 
-const inicio = require('./modulos/conta_receber/conta-receber.router.js')
+const conta_receber = require('./modulos/conta_receber/conta-receber.router.js')
 
 const app = express()
 
@@ -15,7 +15,7 @@ app.use(express.json())
 
 
 
-app.use('/',inicio)
+app.use('/conta-receber',conta_receber)
 
 
 

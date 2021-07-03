@@ -1,5 +1,4 @@
 const express = require('express')
-const { token } = require('morgan')
 const inicio = express.Router()
 
 const ContaReceberController = require('./conta-receber.controller.js')

@@ -28,7 +28,7 @@ class ContaReceberListagem extends React.Component{
     // usar nome da coluna do banco como referencia
     this.mascaras = {
       valor: (value)=>{ return `R$ ${value}`},
-      observacoes: (value)=>{return value == undefined ? 'zerado' : 'nada mesmo'},
+      observacoes: (value)=>{return value == undefined ? 'zerado' : value},
       id_status: (value)=>{  return value == 1 ? 'pago' : (value == 2 ? 'devendo': (value == 3 ?  'pago part' : value))},
       recorrente:  (value)=>{return value == 1 ? 'Sim' : 'Não'}
     }
@@ -44,7 +44,7 @@ class ContaReceberListagem extends React.Component{
                 </div>  
                 <h1> Listagem Contas a Receber</h1>
               </div>
-              <Tabela   history={this.props.history} headers={this.state.colunas} url={'listar'} mask={this.mascaras} values={ this.state.resultado}/> 
+              <Tabela history={this.props.history} headers={this.state.colunas} url={'conta-receber'} mask={this.mascaras} values={ this.state.resultado}/> 
 
           </div>
         );  
