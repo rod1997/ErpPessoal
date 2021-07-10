@@ -1,0 +1,14 @@
+.login-form {
+    align-items: center;
+    background-color: rgb(167, 163, 163);
+    background: url('../../674995.jpg');
+    background-size:cover;
+}
+.card-login{
+    background-color: rgb(157, 99, 212);
+    color: black;
+}
+.p-inputtext{
+    background-color: rgb(28, 28, 29);
+    border-color: rgb(8, 8, 8);
+}

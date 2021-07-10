@@ -49,12 +49,12 @@ export class Tabela extends React.Component{
     }
     ajax(busca="",init,quant){
 
-        let url = (busca == "" )? `http://localhost:3005/${this.state.url}/listar?init=${init}&quant=${quant}` : `http://localhost:3005/${this.state.url}?busca=${busca}&init=${init}&quant=${quant}`
+        let url = (busca === "" )? `http://localhost:3005/${this.state.url}/listar?init=${init}&quant=${quant}` : `http://localhost:3005/${this.state.url}?busca=${busca}&init=${init}&quant=${quant}`
 
         Axios.get(url)
         .then(result=>{
 
-            if(result.status == 200){
+            if(result.status === 200){
                 console.log(result.status)
                 console.log(result.data.listaReceber)
                 const retorno = result.data.listaReceber
