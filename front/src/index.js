@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import './index.css';
-
+import Axios from 'axios';
 
 //import 'primereact/resources/themes/saga-blue/theme.css'
 import  "primereact/resources/themes/bootstrap4-light-purple/theme.css"
@@ -11,22 +11,10 @@ import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css';
 
 import  MenuPrincipal  from './modulos/menu/menu.js';
-
-
 import dashboard from "./modulos/dashboard/dashboard.js"
-
 import ContaReceberRotas from "./modulos/conta-receber/router-conta-receber"
 import ContaPagarRotas from "./modulos/conta-pagar/router-contas-pagar"
 import Login from "./modulos/login/form-login"
-
-const autentifica = ()=>{
-
-  if(window.localStorage.token2 == undefined){
-    return false
-  }else{
-    return true
-  }
-}
 
 const RotasPrivadas = ()=>{ 
   return (<>
@@ -48,12 +36,47 @@ const login = () => {
     </Switch>
   )
 }
+const autentifica = ()=>{
 
-ReactDOM.render(
-  <BrowserRouter>  
-    {autentifica() ? RotasPrivadas(): login()}
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+  if(window.localStorage.token2 == undefined){
+
+    ReactDOM.render(
+      <BrowserRouter>  
+        {login()}
+      </BrowserRouter>,
+      document.getElementById('root')
+      );
+
+  }else{
+    var token = window.localStorage.getItem("token2")
+    let url = "http://localhost:3005/"
+
+    Axios.post(url,{},{
+      headers: {
+        token: token,
+        auth: true
+    }})
+    .then(result => {
+      if(result.data.resposta == true){
+        ReactDOM.render(
+          <BrowserRouter>  
+            {RotasPrivadas()}
+          </BrowserRouter>,
+          document.getElementById('root')
+        );
+      }else{
+        ReactDOM.render(
+          <BrowserRouter>  
+            {login()}
+          </BrowserRouter>,
+          document.getElementById('root')
+        );
+      }
+    })
+  }
+}
+autentifica()
 
 
+  
+  
