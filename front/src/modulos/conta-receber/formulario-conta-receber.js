@@ -54,7 +54,10 @@ export default class ContaReceberFormulario extends React.Component{
         Axios({
             method: 'post',
             url: `http://localhost:3005/conta-receber/${this.props.match.params.id == 'novo' ? 'criar' : 'atualizar'}`,
-            data: dadosForm
+            data: dadosForm,
+            headers:{
+                token: window.localStorage.getItem("token2")
+            }
         })
         .then((response)=>{
             
@@ -90,7 +93,11 @@ export default class ContaReceberFormulario extends React.Component{
     componentDidMount(){
         if(this.props.match.params.id !== "novo"){
             let url = `http://localhost:3005/conta-receber/listar?id=${this.props.match.params.id }`
-            Axios.get(url)
+            Axios.get(url,{
+                headers:{
+                    token: window.localStorage.getItem("token2")
+                }
+            })
             .then(result=>{
 
                 if(result.status == 200){

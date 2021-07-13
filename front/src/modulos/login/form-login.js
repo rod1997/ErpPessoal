@@ -5,8 +5,8 @@ import {Password} from 'primereact/password';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import "./form-login.css"
-//<InputText id="inputtext" value={this.state.value1} onChange={(e) => this.setState({ value1: e.target.value })} className="p-invalid" />
-
+import Axios from 'axios';
+import { Toast } from 'primereact/toast';
 
 class Login extends React.Component{
 
@@ -18,6 +18,7 @@ class Login extends React.Component{
             classeLogin: "",
             classeSenha: ""
         }
+        this.showError = this.showError.bind(this);
     }
     validaFormulario(){
         if(this.state.login != "" && this.state.senha != ""){
@@ -27,12 +28,39 @@ class Login extends React.Component{
         }
     }
     logar(){
-        window.localStorage.token2 = "shdgfsfgvsjfhb9s8yfi237ysfsdyfgsdvf827gfisdyf82ib"
-        window.location = '/dashboard'
+
+        let url = `http://localhost:3005/login`
+        Axios.post(url,
+            {
+                dados:{
+                    login: this.state.login,
+                    senha: this.state.senha
+                }
+            }
+        ).then((result)=>{
+
+            if(result.data.resposta == false){
+
+                this.showError()
+
+            }else if(result.data.resposta == true && result.data.token ){
+
+                window.localStorage.setItem("token2",result.data.token)
+                window.location = '/dashboard'
+            }
+
+        }).catch((erro)=>{
+            console.log(erro)
+        })
     }
+    showError() {
+        this.toast.show({severity:'error', summary: 'Error', detail:'Senha incorreta', life: 4000});
+    }
+
     render(){
         return(
             <div className="login-form p-d-flex p-jc-center " style={{ width:'100vw',height:"100vh"}}>
+                <Toast ref={(el) => this.toast = el} />
                         
                 <Card style={{ width:'19vw' ,height:"40vh"}} className="card-login p-jc-center">
                     <h1>Login</h1>

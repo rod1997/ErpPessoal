@@ -92,8 +92,9 @@ class contaReceberController{
             const [ retorno ] = await conn.query(sql,valores)
             return retorno
 
-        }catch{
+        }catch(erro){
             console.log('erro banco')
+            console.log(erro)
             return false
         }    
 

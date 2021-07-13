@@ -49,7 +49,7 @@ const autentifica = ()=>{
 
   }else{
     var token = window.localStorage.getItem("token2")
-    let url = "http://localhost:3005/"
+    let url = "http://localhost:3005/sessao"
 
     Axios.post(url,{},{
       headers: {

@@ -44,22 +44,27 @@ class MenuPrincipal extends Component {
                 ]
             },
             {
-                label:'Usuario',
-                icon:'pi pi-fw pi-file',
+                label:'Meu Usuario',
+                icon:'pi pi-fw pi-user-minus',
                 items:[
                     {
-                        label:'usuario',
-                        icon:'pi pi-fw pi-trash'
-                    },
-                    {
-                        label:'Logar',
+                        label:'editar',
                         icon:'pi pi-fw pi-external-link'
+                    },
+                
+                    {
+                        label:'sair',
+                        icon:'pi pi-fw pi-trash',
+                        command:() => { 
+                                window.localStorage.removeItem("token2")
+                                window.location = '/login'
+                        }   
                     }
-                ]
+                ]    
             }
             
         ];
-
+        
        
                
      

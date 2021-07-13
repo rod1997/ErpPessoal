@@ -53,7 +53,7 @@ export class Tabela extends React.Component{
 
         Axios.get(url,{
             headers: {
-              token: "aksdgajshdgra76tgdda6s8ydg7a76sdfa6sdgias7dt8as6dt"
+              token: window.localStorage.getItem("token2")
             }})
         .then(result=>{
 
